@@ -1,0 +1,41 @@
+:root {
+    background-color: black;
+    font-family: Ubuntu, sans-serif;
+}
+
+body {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+.sampler {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .pad {
+        background-color: transparent;
+        box-sizing: content-box;
+        cursor: pointer;
+        font: inherit;
+        transition: all 50ms ease;
+        border: 2px solid white;
+        color: white;
+        margin: 2rem;
+        outline: none;
+        padding: 2rem;
+        text-transform: uppercase;
+        text-align: center;
+        width: 5rem;
+    }
+
+    .pad.is-playing {
+        border-color: yellowgreen;
+        color: yellowgreen;
+        transform: scale(1.1);
+    }

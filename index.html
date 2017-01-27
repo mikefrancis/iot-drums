@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IoT Drums</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sampler">
+        <button class="pad" data-sample="kick">
+            Kick
+        </button>
+
+        <button class="pad" data-sample="hihat">
+            Hi-hat
+        </button>
+
+        <button class="pad" data-sample="snare">
+            Snare
+        </button>
+
+        <button class="pad" data-sample="tom">
+            Tom
+        </button>
+
+        <button class="pad" data-sample="ride">
+            Ride
+        </button>
+
+        <button class="pad" data-sample="boom">
+            Boom
+        </button>
+    </div>
+
+    <audio src="samples/kick.wav" data-sample="kick"></audio>
+    <audio src="samples/hihat.wav" data-sample="hihat"></audio>
+    <audio src="samples/snare.wav" data-sample="snare"></audio>
+    <audio src="samples/tom.wav" data-sample="tom"></audio>
+    <audio src="samples/ride.wav" data-sample="ride"></audio>
+    <audio src="samples/boom.wav" data-sample="boom"></audio>
+
+    <script src="https://cdn.socket.io/socket.io-1.4.0.js"></script>
+    <script>
+    function playSample(sample) {
+        console.log(sample);
+        const audio = document.querySelector(`audio[data-sample="${sample}"]`);
+        const pad = document.querySelector(`.pad[data-sample="${sample}"]`);
+
+        if (!audio) {
+            return;
+        }
+
+        pad.classList.add('is-playing');
+        audio.currentTime = 0;
+        audio.play();
+    }
+
+    const pads = Array.from(document.querySelectorAll('.pad'));
+    pads.forEach(function (pad) {
+        pad.addEventListener('transitionend', removeTransition);
+
+        pad.addEventListener('click', function (e) {
+            var sample = e.target.getAttribute('data-sample');
+
+            playSample(sample);
+        });
+    });
+
+    var socket = io('http://localhost:3000');
+    socket.on('sample', function (sample) {
+        playSample(sample);
+
+        console.log(`HOOK TO DO OTHER AMAZING STUFF 'COS I PLAYED THE FLIPPING ${sample.toUpperCase()}`);
+    });
+
+    function removeTransition(e) {
+        if (e.propertyName !== 'transform') {
+            return;
+        }
+
+        e.target.classList.remove('is-playing');
+    }
+    </script>
+</body>
+</html>
